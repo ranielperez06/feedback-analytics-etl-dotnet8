@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+<rect width="1200" height="700" fill="#ffffff"/><rect width="1200" height="80" fill="#172554"/>
+<text x="40" y="48" fill="white" font-family="Arial" font-size="28" font-weight="bold">Arquitectura ETL - Feedback Analytics</text>
+<g font-family="Arial" font-size="18"><rect x="45" y="130" width="220" height="90" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/><text x="75" y="180">CSV / CsvHelper</text>
+<rect x="45" y="290" width="220" height="90" rx="16" fill="#ecfdf5" stroke="#059669" stroke-width="3"/><text x="65" y="340">PostgreSQL fuente</text>
+<rect x="45" y="450" width="220" height="90" rx="16" fill="#ecfeff" stroke="#0891b2" stroke-width="3"/><text x="78" y="500">API REST</text>
+<rect x="400" y="210" width="360" height="260" rx="20" fill="#f8fafc" stroke="#172554" stroke-width="4"/><text x="475" y="255" font-weight="bold">Worker Service .NET 8</text><text x="445" y="305">Domain + Application</text><text x="445" y="345">Infrastructure + Worker</text><text x="445" y="385">Async + parallel + ILogger</text>
+<rect x="900" y="180" width="250" height="120" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="3"/><text x="940" y="230" font-weight="bold">PostgreSQL staging</text><text x="935" y="265">COPY binario</text>
+<rect x="900" y="380" width="250" height="100" rx="18" fill="#fff7ed" stroke="#d97706" stroke-width="3"/><text x="950" y="438">Base analítica</text>
+<rect x="900" y="550" width="250" height="80" rx="18" fill="#f5f3ff" stroke="#7c3aed" stroke-width="3"/><text x="980" y="600">Dashboard</text></g>
+<g stroke="#475569" stroke-width="5" marker-end="url(#a)"><line x1="265" y1="175" x2="400" y2="275"/><line x1="265" y1="335" x2="400" y2="335"/><line x1="265" y1="495" x2="400" y2="405"/><line x1="760" y1="340" x2="900" y2="240"/><line x1="1025" y1="300" x2="1025" y2="380"/><line x1="1025" y1="480" x2="1025" y2="550"/></g></svg>
