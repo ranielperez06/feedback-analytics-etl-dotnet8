@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <ItemGroup>
+    <ProjectReference Include="..\FeedbackAnalytics.Application\FeedbackAnalytics.Application.csproj" />
+    <ProjectReference Include="..\FeedbackAnalytics.Domain\FeedbackAnalytics.Domain.csproj" />
+    <ProjectReference Include="..\FeedbackAnalytics.Infrastructure\FeedbackAnalytics.Infrastructure.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
