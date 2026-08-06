@@ -1,0 +1,6 @@
+survey_id,participant,comment,score,created_at,area,channel
+SUR-001,Ana Pérez,El proceso de compra fue rápido y sencillo,5,2026-07-28T14:20:00-04:00,Ventas,Formulario interno
+SUR-002,Carlos Díaz,La aplicación tarda al cargar el historial,3,2026-07-29T09:15:00-04:00,Tecnología,Correo
+SUR-003,María López,El personal respondió todas mis preguntas,5,2026-07-30T11:45:00-04:00,Servicio al cliente,Formulario interno
+SUR-004,José Martínez,Sería útil recibir notificaciones del estado del pedido,4,2026-07-31T16:10:00-04:00,Operaciones,Encuesta web
+SUR-005,Laura Gómez,Tuve que intentar el pago dos veces,2,2026-08-01T10:05:00-04:00,Finanzas,Encuesta web
