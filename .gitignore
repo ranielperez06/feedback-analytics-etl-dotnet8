@@ -1,0 +1,16 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.db
+*.db-shm
+*.db-wal
+data/staging/*
+!data/staging/.gitkeep
+src/FeedbackAnalytics.Worker/appsettings.Local.json
+.env
+tmp/
+entrega/
+tools/build_documentation.py
