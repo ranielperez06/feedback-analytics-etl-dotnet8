@@ -1,4 +1,5 @@
 using FeedbackAnalytics.Domain.Contracts;
+using FeedbackAnalytics.Infrastructure.Analytics;
 using FeedbackAnalytics.Infrastructure.Extractors;
 using FeedbackAnalytics.Infrastructure.Options;
 using FeedbackAnalytics.Infrastructure.Staging;
@@ -60,6 +61,7 @@ public static class DependencyInjection
             serviceProvider => serviceProvider.GetRequiredService<ApiExtractor>());
 
         services.AddSingleton<IStagingWriter, PostgresStagingWriter>();
+        services.AddSingleton<IAnalyticsLoader, PostgresDimensionLoader>();
 
         return services;
     }
