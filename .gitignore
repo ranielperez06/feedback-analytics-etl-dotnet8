@@ -14,3 +14,4 @@ src/FeedbackAnalytics.Worker/appsettings.Local.json
 tmp/
 entrega/
 tools/build_documentation.py
+__pycache__/
