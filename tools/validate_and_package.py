@@ -29,7 +29,7 @@ class Validation:
 
     def render_report(self) -> str:
         lines = [
-            "REPORTE DE VALIDACIÓN - ACTIVIDAD 1 ETL .NET 8",
+            "REPORTE DE VALIDACIÓN - ETL Y CARGA DIMENSIONAL .NET 8",
             "=" * 54,
             "",
         ]
@@ -42,12 +42,13 @@ class Validation:
                 "",
                 "LIMITACIÓN DEL ENTORNO",
                 "El equipo de preparación contiene el runtime .NET 8 pero no el SDK.",
-                "Por esa razón no fue posible ejecutar dotnet restore/build en este equipo.",
-                "El proyecto está preparado para compilar con .NET SDK 8.",
+                "PostgreSQL está activo, pero no se usaron credenciales personales.",
+                "Por esas razones, la compilación y la ejecución autenticada se realizan",
+                "con scripts reproducibles en el entorno local del estudiante.",
                 "",
                 "RESULTADO",
-                "La estructura, configuración, código, SQL, diagramas, documento y ZIP",
-                "cumplen las verificaciones estáticas y de integridad definidas.",
+                "La estructura, configuración, código, SQL, modelo dimensional,",
+                "diagramas, documento y ZIP cumplen las verificaciones definidas.",
             ]
         )
         return "\n".join(lines) + "\n"
@@ -114,6 +115,26 @@ def validate_code(validation: Validation) -> None:
             / "src/FeedbackAnalytics.Application/Services/ExtractionOrchestrator.cs",
             ["Parallel.ForEachAsync", "Stopwatch", "LogError"],
         ),
+        "Carga dimensional": (
+            ROOT
+            / "src/FeedbackAnalytics.Infrastructure/Analytics/PostgresDimensionLoader.cs",
+            [
+                "IAnalyticsLoader",
+                "BeginTransactionAsync",
+                "ON CONFLICT",
+                "dim_date",
+                "dim_source",
+                "dim_author",
+                "dim_product",
+                "feedback_fact",
+                "CommitAsync",
+                "RollbackAsync",
+            ],
+        ),
+        "Ejecución del Warehouse": (
+            ROOT / "src/FeedbackAnalytics.Worker/Worker.cs",
+            ["IAnalyticsLoader", "LoadAsync", "Warehouse ready"],
+        ),
     }
 
     for name, (path, tokens) in code_expectations.items():
@@ -170,9 +191,44 @@ def validate_data_and_sql(validation: Validation) -> None:
         "source, staging y analytics definidos",
     )
 
+    dimensional_sql = (
+        ROOT / "database/004_create_and_load_dimensions.sql"
+    ).read_text(encoding="utf-8")
+    validation_sql = (
+        ROOT / "database/005_validate_dimensional_load.sql"
+    ).read_text(encoding="utf-8")
+    validation.check(
+        "Modelo dimensional",
+        all(
+            token in dimensional_sql
+            for token in [
+                "analytics.dim_date",
+                "analytics.dim_source",
+                "analytics.dim_author",
+                "analytics.dim_product",
+                "ON CONFLICT",
+                "VALIDATE CONSTRAINT",
+                "COMMIT",
+            ]
+        ),
+        "cuatro dimensiones, carga idempotente e integridad referencial",
+    )
+    validation.check(
+        "Consultas de validación",
+        "orphan_facts" in validation_sql
+        and "duplicate_count" in validation_sql
+        and "JOIN analytics.dim_date" in validation_sql,
+        "conteos, consulta estrella, huérfanos y duplicados",
+    )
+
 
 def validate_visuals(validation: Validation) -> None:
-    for name in ["Diagrama_Arquitectura.png", "Diagrama_Flujo_ETL.png"]:
+    for name in [
+        "Diagrama_Arquitectura.png",
+        "Diagrama_Flujo_ETL.png",
+        "Modelo_Dimensional.png",
+        "Flujo_Carga_Dimensiones.png",
+    ]:
         path = ROOT / "docs" / name
         with Image.open(path) as image:
             validation.check(
@@ -185,17 +241,19 @@ def validate_visuals(validation: Validation) -> None:
     reader = PdfReader(pdf_path)
     text = "\n".join(page.extract_text() or "" for page in reader.pages)
     expected = [
-        "Diagrama de arquitectura",
-        "Flujo de extracción",
-        "Atributos de calidad",
-        "Seguridad y configuración",
+        "Arquitectura dimensional",
+        "Descripción de las dimensiones",
+        "Tabla de hechos",
+        "Proceso de carga",
         "Evidencia de implementación",
+        "Validación del funcionamiento",
         "Conclusión",
+        "github.com/ranielperez06/feedback-analytics-etl-dotnet8",
     ]
     validation.check(
         "Documento técnico PDF",
-        len(reader.pages) == 7 and all(value in text for value in expected),
-        "7 páginas con diagramas, decisiones, código y validación",
+        8 <= len(reader.pages) <= 12 and all(value in text for value in expected),
+        f"{len(reader.pages)} páginas con modelo, tablas, proceso, código y validación",
     )
 
 
