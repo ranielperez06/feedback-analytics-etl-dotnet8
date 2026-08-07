@@ -1,10 +1,12 @@
 using FeedbackAnalytics.Application.Services;
+using FeedbackAnalytics.Domain.Contracts;
 using FeedbackAnalytics.Domain.Models;
 
 namespace FeedbackAnalytics.Worker;
 
 public sealed class Worker(
     ExtractionOrchestrator orchestrator,
+    IAnalyticsLoader analyticsLoader,
     IHostApplicationLifetime applicationLifetime,
     ILogger<Worker> logger) : BackgroundService
 {
@@ -29,7 +31,19 @@ public sealed class Worker(
                 Environment.ExitCode = 1;
                 logger.LogWarning(
                     "The extraction finished with one or more failed sources.");
+                return;
             }
+
+            DimensionLoadResult loadResult =
+                await analyticsLoader.LoadAsync(stoppingToken);
+
+            logger.LogInformation(
+                "Warehouse ready: Dates={DateRows}, Sources={SourceRows}, Authors={AuthorRows}, Products={ProductRows}, Facts={FactRows}.",
+                loadResult.DateRows,
+                loadResult.SourceRows,
+                loadResult.AuthorRows,
+                loadResult.ProductRows,
+                loadResult.FactRows);
         }
         catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
         {
